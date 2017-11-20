@@ -1,64 +1,65 @@
 This README file contains information on the contents of the
 Qt automotive layer.
 
-Please see the corresponding sections below for details.
+based on instructions from here: 
+https://medium.com/@shigmas/yocto-pi-and-qt-e9f2df38a610
+and code from here:
+http://code.qt.io/cgit/yocto/meta-boot2qt.git/
 
+The purpose of the recipe is to build Yocto image on latest Ubuntu (mine is 17.19 at the moment) and latest Yocto branch (currently "rocko")
 
-Dependencies
-============
+Intructions how to build:
 
-This layer depends on:
+1. Create working folder
+$ mkdir yoctoproject (or name as you wish)
+$ cd yoctoproject
 
-  URI: git://git.openembedded.org/bitbake
-  branch: master
+2. Clone all necessary code
+$ git clone -b rocko git://git.yoctoproject.org/poky
+$ git clone -b rocko git://git.openembedded.org/meta-openembedded
+$ git clone -b rocko git://git.yoctoproject.org/meta-raspberrypi
+$ git clone -b rocko https://github.com/meta-qt5/meta-qt5.git
 
-  URI: git://git.openembedded.org/openembedded-core
-  layers: meta
-  branch: master
+clone this repo along with the other 
 
-  URI: git://git.yoctoproject.org/xxxx
-  layers: xxxx
-  branch: master
+make sure you are not behind proxy, otherwise google instructions on how to make git working behind the proxies
 
+3. Run:
+$ source poky/oe-init-build-env
 
-Patches
-=======
+this will create "build" folder in your yoctoproject folder
 
-Please submit any patches against the mylayer layer to the
-xxxx mailing list (xxxx@zzzz.org) and cc: the maintainer:
-
-Maintainer: XXX YYYYYY <xxx.yyyyyy@zzzzz.com>
-
-
-Table of Contents
-=================
-
-  I. Adding the mylayer layer to your build
- II. Misc
-
-
-I. Adding the mylayer layer to your build
-=================================================
-
---- replace with specific instructions for the mylayer layer ---
-
-In order to use this layer, you need to make the build system aware of
-it.
-
-Assuming the mylayer layer exists at the top-level of your
-yocto build tree, you can add it to the build system by adding the
-location of the mylayer layer to bblayers.conf, along with any
-other layers needed. e.g.:
-
+4. Edit configuration files in build/conf folder:
+  a) make sure bblayers.conf looks like this:
+  # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+  # changes incompatibly
+  POKY_BBLAYERS_CONF_VERSION = "2"
+  
+  BBPATH = "${TOPDIR}"
+  BBFILES ?= ""
+  
   BBLAYERS ?= " \
-    /path/to/yocto/meta \
-    /path/to/yocto/meta-poky \
-    /path/to/yocto/meta-yocto-bsp \
-    /path/to/yocto/meta-mylayer \
-    "
+    /home/local/VCCNET/vstelmak/rpiyocto/poky/meta \
+    /home/local/VCCNET/vstelmak/rpiyocto/poky/meta-poky \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-openembedded/meta-oe \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-openembedded/meta-multimedia \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-openembedded/meta-networking \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-openembedded/meta-python \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-raspberrypi \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-qt5 \
+    /home/local/VCCNET/vstelmak/rpiyocto/meta-qtautomotive \  
+  "
+  b) edit local.conf:
+    change MACHINE to
+    MACHINE ??= "raspberrypi3"
+    
+    if you want to have com port enabled, add
+    ENABLE_UART = "1"
+    
+    to setup GPU memory size:
+    GPU_MEM = "128"
 
+5. Start baking
+    bitbake qt5-automotive-image
 
-II. Misc
-========
-
---- replace with specific information about the mylayer layer ---
+  
