@@ -1,0 +1,29 @@
+From b4ed8c9d4a391771cba485bfa685147126260dc2 Mon Sep 17 00:00:00 2001
+From: Samuli Piippo <samuli.piippo@qt.io>
+Date: Thu, 7 Sep 2017 10:24:11 +0300
+Subject: [PATCH] Use QT_HOST_BINS/get for getting correct path
+
+Patch QT_HOST_BINS same way as is done it qtbase for getting
+the EffectivePath instead of installation path.
+
+Change-Id: I3e9c04019c432e182dcb5c0898275173f20de1e2
+---
+ mkspecs/features/ivigenerator.prf | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mkspecs/features/ivigenerator.prf b/mkspecs/features/ivigenerator.prf
+index 65c497e..7634355 100644
+--- a/mkspecs/features/ivigenerator.prf
++++ b/mkspecs/features/ivigenerator.prf
+@@ -31,9 +31,9 @@ QFACE_YAML = $$QFACE_ABS_PWD/$${QFACE_BASE_NAME}.yaml
+ OTHER_FILES += $$QFACE_FILE
+ 
+ # Detect whether we are using the feature inside the qtivi repository
+-VIRTUALENV_PATH = $$[QT_HOST_BINS]/ivigenerator/qtivi_qface_virtualenv
++VIRTUALENV_PATH = $$[QT_HOST_BINS/get]/ivigenerator/qtivi_qface_virtualenv
+ INTERNAL_VIRTUALENV_PATH = $$QTIVI_BUILD_ROOT/src/tools/ivigenerator/qtivi_qface_virtualenv
+-IVI_GENERATOR_PATH = $$[QT_HOST_BINS]/ivigenerator
++IVI_GENERATOR_PATH = $$[QT_HOST_BINS/get]/ivigenerator
+ QTEST_ENVIRONMENT = $$upper($$(QTEST_ENVIRONMENT))
+ 
+ # Try to use the internal virtualenv when building qtivi
