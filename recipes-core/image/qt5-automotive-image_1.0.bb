@@ -7,6 +7,7 @@ include recipes-core/images/rpi-basic-image.bb
 inherit sdcard_image-rpi
 SUMMARY = "The minimal image that can run Qt5 applications with QtAutomotive suite"
 LICENSE = "MIT"
+LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
 
 AUTOMOTIVE = " \
     qtapplicationmanager \
@@ -19,6 +20,7 @@ MY_TOOLS = " \
     qtbase-mkspecs \
     qtbase-plugins \
     qtbase-tools \
+    qt5-env \
 "
 MY_PKGS = " \
     qt3d \
